@@ -78,7 +78,7 @@ const PARTIALS_DIR = path.join(__dirname, "partials");
 const DEFAULT_DRIVER_USERS_URL = "https://hub.jastukvtc.com/api/drivers/users";
 const DEFAULT_PROFILE_DRIVERS_URL = "https://hub.jastukvtc.com/api/vtc/drivers";
 const DEFAULT_LIVE_DRIVERS_URL = "https://api.jastukvtc.com/live/drivers";
-const DEFAULT_DRIVERSHUB_COMPLETE_JOB_URL = "http://5.231.5.90:8082/complete-job";
+const DEFAULT_DRIVERSHUB_COMPLETE_JOB_URL = "https://hub.jastukvtc.com/complete-job";
 const DEFAULT_ADMIN_DISCORD_IDS = [
   "1496983353037951167",
   "1496920531721650428",
@@ -89,6 +89,10 @@ const LEGACY_LIVE_DRIVERS_URLS = new Set([
   "http://5.231.5.90:2238/live/drivers",
   "https://5.231.5.90:2238/live/drivers"
 ]);
+const LEGACY_DRIVERSHUB_COMPLETE_JOB_URLS = new Set([
+  "http://5.231.5.90:8082/complete-job",
+  "https://5.231.5.90:8082/complete-job"
+]);
 const LIVE_RECEIVER_PORT = 48253;
 const DISCORD_RPC_UPDATE_MS = 1000;
 const DISCORD_RPC_RECONNECT_MS = 10000;
@@ -97,6 +101,8 @@ const TRUCKERSMP_CACHE_MS = 2500;
 const TRUCKERSMP_SERVERS_CACHE_MS = 5 * 60 * 1000;
 const TRUCKERSMP_LOG_MAX_AGE_MS = 12 * 60 * 60 * 1000;
 const TRUCKERSMP_LOG_CANDIDATE_LIMIT = 8;
+const JOB_DELIVERY_RETRY_MS = 60 * 1000;
+const JOB_DELIVERY_MAX_AUTO_ATTEMPTS = 5;
 let receivedLiveTelemetry = null;
 let lastLiveTrackerSnapshot = null;
 let liveReceiverServer = null;
@@ -128,6 +134,7 @@ let appCleanupStarted = false;
 let foregroundGameCache = { checkedAt: 0, result: { isGame: false, processName: null, title: null } };
 let truckersMpCache = { checkedAt: 0, result: null };
 let truckersMpServersCache = { checkedAt: 0, servers: [] };
+const activeJobMetrics = new Map();
 
 function appendDiscordPresenceLog(message, payload = null) {
   try {
@@ -404,6 +411,10 @@ function mergeEnvValues(defaults, overrides) {
       values[key] = DEFAULT_LIVE_DRIVERS_URL;
     }
   });
+
+  if (!values.DRIVERSHUB_COMPLETE_JOB_URL || LEGACY_DRIVERSHUB_COMPLETE_JOB_URLS.has(values.DRIVERSHUB_COMPLETE_JOB_URL)) {
+    values.DRIVERSHUB_COMPLETE_JOB_URL = DEFAULT_DRIVERSHUB_COMPLETE_JOB_URL;
+  }
 
   return values;
 }
@@ -769,6 +780,71 @@ function parseNumber(value, fallback = 0) {
   return Number.isFinite(numeric) ? numeric : fallback;
 }
 
+function parseOptionalNumber(...values) {
+  for (const value of values) {
+    if (value === undefined || value === null || value === "") {
+      continue;
+    }
+
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) {
+      return numeric;
+    }
+  }
+
+  return null;
+}
+
+function parseTimestampMs(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? (value < 100000000000 ? value * 1000 : value) : null;
+  }
+
+  const text = String(value).trim();
+  if (!text) {
+    return null;
+  }
+
+  const numeric = Number(text);
+  if (Number.isFinite(numeric)) {
+    return numeric < 100000000000 ? numeric * 1000 : numeric;
+  }
+
+  const parsed = Date.parse(text);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function durationMsFromJob(job) {
+  const explicitDuration = parseOptionalNumber(
+    job.duration_ms,
+    job.durationMs,
+    job.timeTaken,
+    job.time_taken_ms,
+    job.realtime?.timeTaken
+  );
+  if (explicitDuration !== null) {
+    return explicitDuration < 100000 ? explicitDuration * 1000 : explicitDuration;
+  }
+
+  const durationSeconds = parseOptionalNumber(job.duration_s, job.durationSeconds, job.time_taken_s);
+  if (durationSeconds !== null) {
+    return durationSeconds * 1000;
+  }
+
+  const startedAt = parseTimestampMs(firstValue(job.started_at_utc, job.started_at, job.start_time, job.startTime, job.realtime?.start));
+  const finishedAt = parseTimestampMs(firstValue(job.completed_at, job.finished_at, job.finished_at_utc, job.delivered_at, job.timestamp, job.time, job.storedAt, job.realtime?.end));
+  return startedAt !== null && finishedAt !== null && finishedAt >= startedAt ? finishedAt - startedAt : 0;
+}
+
+function speedKmhToMps(value) {
+  const speed = parseOptionalNumber(value);
+  return speed === null ? null : speed / 3.6;
+}
+
 function objectFromText(value, fallbackId = "unknown") {
   if (value && typeof value === "object" && !Array.isArray(value)) {
     return {
@@ -790,7 +866,7 @@ function getConfiguredDriversHubCompleteJobUrl() {
 }
 
 function isJobDeliveryEnabled() {
-  return String(loadEnv().values.ENABLE_JOB_DELIVERY || "").toLowerCase() === "true";
+  return String(loadEnv().values.ENABLE_JOB_DELIVERY || "true").toLowerCase() !== "false";
 }
 
 function getJobDeliveryTarget() {
@@ -846,6 +922,21 @@ function buildDriversHubCompleteJobPayload(job) {
   const cargoName = textFromValue(firstValue(job.cargo, job.cargoName, job.cargo_name, job.description, job.title)) || "Unknown Cargo";
   const startedAt = firstValue(job.started_at_utc, job.started_at, job.start_time, job.startTime, job.timestamp, job.time);
   const finishedAt = firstValue(job.completed_at, job.finished_at, job.finished_at_utc, job.delivered_at, job.timestamp, job.time, job.storedAt);
+  const cargoMassKg = parseNumber(firstValue(job.cargo?.mass, job.cargo?.mass_kg, job.mass, job.mass_kg, job.cargo_mass, job.cargo_mass_kg, job.cargoMassKg));
+  const rawCargoDamage = parseNumber(firstValue(job.cargo?.damage, job.damage, job.cargo_damage, job.cargoDamage, job.damage_percent, job.damagePercent));
+  const cargoDamage = rawCargoDamage <= 1 ? rawCargoDamage * 100 : rawCargoDamage;
+  const topSpeed = parseNumber(firstValue(
+    job.topSpeedMps,
+    job.top_speed_mps,
+    speedKmhToMps(firstValue(job.topSpeedKmh, job.top_speed_kmh, job.maxSpeedKmh, job.max_speed_kmh, job.topSpeed, job.top_speed, job.maxSpeed, job.max_speed))
+  ));
+  const avgSpeed = parseNumber(firstValue(
+    job.avgSpeedMps,
+    job.avg_speed_mps,
+    speedKmhToMps(firstValue(job.avgSpeedKmh, job.avg_speed_kmh, job.averageSpeedKmh, job.average_speed_kmh, job.avgSpeed, job.avg_speed, job.averageSpeed, job.average_speed))
+  ));
+  const fuelBurned = parseNumber(firstValue(job.fuel?.burned, job.fuel_burned, job.fuel_burned_l, job.fuelBurned, job.fuelBurnedLiters, job.fuel_used, job.fuelUsed, job.fuel));
+  const durationMs = durationMsFromJob(job);
 
   return {
     object: "event",
@@ -868,9 +959,9 @@ function buildDriversHubCompleteJobPayload(job) {
       cargo: {
         id: String(firstValue(job.cargo?.id, cargoName.toLowerCase().replace(/[^a-z0-9]+/gi, "_").replace(/^_+|_+$/g, ""), "unknown")),
         name: cargoName,
-        mass: parseNumber(firstValue(job.cargo?.mass, job.mass, job.cargo_mass)),
+        mass: cargoMassKg,
         unit_mass: parseNumber(firstValue(job.cargo?.unit_mass, job.unit_mass, job.unitMass)),
-        damage: parseNumber(firstValue(job.cargo?.damage, job.damage, job.cargo_damage, job.cargoDamage, job.damage_percent, job.damagePercent)),
+        damage: cargoDamage,
         language: firstValue(job.cargo?.language, "en")
       },
       truck: {
@@ -882,19 +973,20 @@ function buildDriversHubCompleteJobPayload(job) {
         },
         ownTruck: true
       },
-      topSpeed: parseNumber(firstValue(job.topSpeed, job.top_speed, job.maxSpeed, job.max_speed)),
-      avgSpeed: parseNumber(firstValue(job.avgSpeed, job.avg_speed, job.averageSpeed, job.average_speed)),
+      topSpeed,
+      avgSpeed,
       income: parseNumber(firstValue(job.income, job.revenue, job.earnings, job.money)),
       distanceDriven: parseNumber(firstValue(job.distanceDriven, job.distance, job.distance_km, job.distanceKm, job.km)),
       plannedDistance: parseNumber(firstValue(job.plannedDistance, job.planned_distance_km, job.distance, job.distance_km, job.distanceKm, job.km)),
       fuel: {
         current: parseNumber(firstValue(job.fuel?.current, job.fuel_current)),
-        burned: parseNumber(firstValue(job.fuel?.burned, job.fuel_burned, job.fuel)),
+        burned: fuelBurned,
         purchased: parseNumber(firstValue(job.fuel?.purchased, job.fuel_purchased))
       },
       realtime: {
         start: startedAt || finishedAt || new Date().toISOString(),
-        end: finishedAt || startedAt || new Date().toISOString()
+        end: finishedAt || startedAt || new Date().toISOString(),
+        timeTaken: durationMs
       }
     }
   };
@@ -988,13 +1080,17 @@ async function upsertAndSendJobDeliveries(jobs) {
     const key = job._trackerKey || getJobKey(job);
     const existing = deliveryMap.get(key);
     if (existing?.status === "sent") {
-      deliveryMap.set(key, createJobDeliveryRecord(job, existing));
+      deliveryMap.set(key, existing);
       return;
     }
 
     const record = createJobDeliveryRecord(job, existing);
     deliveryMap.set(key, record);
-    if (!existing || existing.status === "pending") {
+    const lastAttemptMs = parseTimestampMs(existing?.lastAttemptAt);
+    const retryFailed = existing?.status === "failed" &&
+      (existing.attempts || 0) < JOB_DELIVERY_MAX_AUTO_ATTEMPTS &&
+      (lastAttemptMs === null || Date.now() - lastAttemptMs >= JOB_DELIVERY_RETRY_MS);
+    if (!existing || existing.status === "pending" || retryFailed) {
       pendingRecords.push(record);
     }
   });
@@ -1035,6 +1131,15 @@ async function resendJobDelivery(jobKey) {
   return sentRecord;
 }
 
+async function syncStoredJobDeliveries() {
+  if (!isJobDeliveryEnabled()) {
+    return loadJobDeliveries();
+  }
+
+  const jobs = loadJobs().jobs.filter(shouldStoreJob);
+  return upsertAndSendJobDeliveries(jobs);
+}
+
 function shouldStoreJob(job) {
   if (isFinishedJob(job)) {
     return true;
@@ -1057,6 +1162,12 @@ function shouldStoreJob(job) {
 
 function collectTrackerJobs(snapshot) {
   return [
+    snapshot?.jobsApi?.jobs,
+    snapshot?.jobsApi?.completed_jobs,
+    snapshot?.jobsApi?.completedJobs,
+    snapshot?.jobsApi?.job_history,
+    snapshot?.jobsApi?.jobHistory,
+    snapshot?.jobsApi?.history,
     snapshot?.jobs,
     snapshot?.completed_jobs,
     snapshot?.completedJobs,
@@ -1066,8 +1177,189 @@ function collectTrackerJobs(snapshot) {
   ].find(Array.isArray) || [];
 }
 
+function getCurrentTrackerJob(snapshot) {
+  const root = snapshot?.jobsApi || snapshot;
+  const telemetry = snapshot?.telemetryApi || {};
+  const liveTelemetry = parseTrackerPayload(telemetry?.live) || {};
+  const fullTelemetry = parseTrackerPayload(telemetry?.telemetry) || {};
+  return root?.current_job ||
+    root?.currentJob ||
+    root?.navigation?.current_job ||
+    root?.navigation?.currentJob ||
+    liveTelemetry?.current_job ||
+    liveTelemetry?.currentJob ||
+    liveTelemetry?.navigation?.current_job ||
+    liveTelemetry?.navigation?.currentJob ||
+    fullTelemetry?.current_job ||
+    fullTelemetry?.currentJob ||
+    fullTelemetry?.navigation?.current_job ||
+    fullTelemetry?.navigation?.currentJob ||
+    {};
+}
+
+function getJobMetricsKey(job) {
+  const sessionId = firstValue(job.session_id, job.sessionId);
+  if (sessionId) {
+    return `session:${sessionId}`;
+  }
+
+  const source = textFromValue(firstValue(job.source?.city, job.source_city, job.sourceCity, job.from, job.origin, job.start));
+  const destination = textFromValue(firstValue(job.destination?.city, job.destination_city, job.destinationCity, job.to, job.target, job.end));
+  const cargo = textFromValue(firstValue(job.cargo, job.cargoName, job.cargo_name, job.description, job.title));
+  return [cargo, source, destination]
+    .map((value) => normalizeKey(value))
+    .filter(Boolean)
+    .join(":") || null;
+}
+
+function getSnapshotSpeedKmh(snapshot) {
+  const payloads = unwrapTelemetryPayload(snapshot);
+  const speed = firstValue(
+    readPath(snapshot, [
+      ["telemetryApi", "telemetry", "truck", "speed", "kph"],
+      ["telemetryApi", "telemetry", "truck", "speed", "kmh"],
+      ["telemetryApi", "telemetry", "truck", "speedKph"],
+      ["telemetryApi", "telemetry", "truck", "speedKmh"],
+      ["telemetryApi", "live", "truck", "speed_kmh"],
+      ["telemetryApi", "live", "truck", "speedKmh"],
+      ["telemetryApi", "live", "truck", "speed"],
+      ["truck", "speed_kmh"],
+      ["truck", "speedKmh"],
+      ["truck", "speed"]
+    ]),
+    findPrimitiveByKeys(payloads, ["speedKph", "speedKmh", "truckSpeed", "speed", "kph", "kmh"])
+  );
+  const speedMps = firstValue(
+    readPath(snapshot, [
+      ["telemetryApi", "telemetry", "truck", "speed_mps"],
+      ["telemetryApi", "telemetry", "truck", "speedMps"],
+      ["telemetryApi", "live", "truck", "speed_mps"],
+      ["telemetryApi", "live", "truck", "speedMps"],
+      ["truck", "speed_mps"],
+      ["truck", "speedMps"]
+    ]),
+    findPrimitiveByKeys(payloads, ["speedMps", "speed_mps"])
+  );
+  return parseOptionalNumber(speed, speedMps !== undefined && speedMps !== null ? Number(speedMps) * 3.6 : undefined);
+}
+
+function getSnapshotFuelLiters(snapshot) {
+  const payloads = unwrapTelemetryPayload(snapshot);
+  return parseOptionalNumber(
+    readPath(snapshot, [
+      ["telemetryApi", "telemetry", "truck", "fuel"],
+      ["telemetryApi", "telemetry", "truck", "fuel", "value"],
+      ["telemetryApi", "telemetry", "truck", "fuel", "amount"],
+      ["telemetryApi", "telemetry", "truck", "fuel", "liters"],
+      ["telemetryApi", "telemetry", "truck", "fuel_liters"],
+      ["telemetryApi", "live", "truck", "fuel"],
+      ["telemetryApi", "live", "truck", "fuel_liters"],
+      ["truck", "fuel"],
+      ["truck", "fuelLiters"],
+      ["truck", "fuel_liters"]
+    ]),
+    findPrimitiveByKeys(payloads, ["fuelLiters", "fuel_liters", "fuelAmount", "fuel_amount", "fuel"])
+  );
+}
+
+function getSnapshotTruckInfo(snapshot) {
+  const liveTruck = snapshot?.telemetryApi?.live?.truck ||
+    snapshot?.telemetryApi?.telemetry?.truck ||
+    snapshot?.truck ||
+    {};
+  const truckName = firstValue(
+    liveTruck.display_name,
+    liveTruck.displayName,
+    liveTruck.name,
+    liveTruck.model,
+    findPrimitiveByKeys(unwrapTelemetryPayload(snapshot), ["truckDisplayName", "truckName", "truckModel"])
+  );
+  const truckBrand = firstValue(liveTruck.brand, liveTruck.make);
+  const displayName = textFromValue(truckName);
+  const brand = textFromValue(truckBrand);
+  const modelName = textFromValue(firstValue(liveTruck.name, liveTruck.model, displayName));
+
+  if (!displayName && !brand) {
+    return null;
+  }
+
+  return {
+    id: String(firstValue(liveTruck.id, liveTruck.truck_id, "unknown")),
+    name: String(brand || displayName || "unknown"),
+    model: {
+      id: String(firstValue(liveTruck.model_id, liveTruck.modelId, liveTruck.id, "unknown")),
+      name: String(modelName || displayName || brand || "unknown")
+    }
+  };
+}
+
+function updateActiveJobMetrics(snapshot) {
+  const currentJob = getCurrentTrackerJob(snapshot);
+  if (!isActiveJob(currentJob)) {
+    return;
+  }
+
+  const key = getJobMetricsKey(currentJob);
+  if (!key) {
+    return;
+  }
+
+  const speedKmh = getSnapshotSpeedKmh(snapshot);
+  const fuelLiters = getSnapshotFuelLiters(snapshot);
+  const truck = getSnapshotTruckInfo(snapshot);
+  const existing = activeJobMetrics.get(key) || {
+    startedAt: new Date().toISOString(),
+    topSpeed: 0,
+    fuelStart: fuelLiters,
+    fuelLast: fuelLiters,
+    fuelBurned: 0,
+    truck: null
+  };
+
+  if (speedKmh !== null) {
+    existing.topSpeed = Math.max(existing.topSpeed || 0, Math.abs(speedKmh));
+  }
+
+  if (fuelLiters !== null) {
+    if (existing.fuelStart === null || existing.fuelStart === undefined) {
+      existing.fuelStart = fuelLiters;
+    }
+    existing.fuelLast = fuelLiters;
+    existing.fuelBurned = Math.max(existing.fuelBurned || 0, (existing.fuelStart || fuelLiters) - fuelLiters);
+  }
+
+  if (truck) {
+    existing.truck = truck;
+  }
+
+  existing.updatedAt = new Date().toISOString();
+  activeJobMetrics.set(key, existing);
+}
+
+function enrichJobWithActiveMetrics(job) {
+  const key = getJobMetricsKey(job);
+  const metrics = key ? activeJobMetrics.get(key) : null;
+  if (!metrics) {
+    return job;
+  }
+
+  const enrichedJob = {
+    ...job,
+    truck: metrics.truck || job.truck,
+    top_speed_kmh: metrics.topSpeed > 0 ? metrics.topSpeed : firstValue(job.top_speed_kmh, job.topSpeedKmh),
+    fuel_burned: metrics.fuelBurned > 0 ? metrics.fuelBurned : firstValue(job.fuel_burned, job.fuel_burned_l, job.fuelBurned)
+  };
+
+  if (isFinishedJob(job)) {
+    activeJobMetrics.delete(key);
+  }
+
+  return enrichedJob;
+}
+
 function persistTrackerJobs(snapshot) {
-  const incomingJobs = collectTrackerJobs(snapshot).filter(shouldStoreJob).map(normalizeTrackerJob);
+  updateActiveJobMetrics(snapshot);
+  const incomingJobs = collectTrackerJobs(snapshot).filter(shouldStoreJob).map(enrichJobWithActiveMetrics).map(normalizeTrackerJob);
   const current = loadJobs();
   const jobMap = new Map(current.jobs.map((job) => [job._trackerKey || getJobKey(job), job]));
 
@@ -1216,8 +1508,12 @@ async function refreshPersistedTrackerJobs() {
 
   trackerPersistenceInFlight = true;
   try {
-    const data = await fetchTracker();
+    const data = await fetchLiveTrackerSnapshot({
+      endpoints: ["/api/jobs", "/api/live"],
+      timeout: TRACKER_JOBS_TIMEOUT_MS
+    });
     persistTrackerJobs(data);
+    await syncStoredJobDeliveries();
   } catch (error) {
     // The game/plugin is often offline; persistence resumes automatically.
   } finally {
@@ -1230,6 +1526,9 @@ function startTrackerPersistenceLoop() {
     return;
   }
 
+  syncStoredJobDeliveries().catch((error) => {
+    appendDiscordPresenceLog("stored job delivery sync failed", { message: error.message });
+  });
   refreshPersistedTrackerJobs();
   trackerPersistenceTimer = setInterval(refreshPersistedTrackerJobs, 5000);
 }
@@ -2148,6 +2447,8 @@ async function fetchLiveTrackerSnapshot(options = {}) {
     }
     return snapshot;
   }, { endpoints: {}, jobsApi: null, telemetryApi: {} });
+
+  updateActiveJobMetrics(snapshot);
 
   lastLiveTrackerSnapshot = {
     cachedAt: Date.now(),

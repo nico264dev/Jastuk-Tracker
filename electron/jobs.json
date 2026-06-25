@@ -79,6 +79,96 @@
       "damage": 0.0076,
       "_trackerKey": "6b402cbc83d741c6dd0b9f9a3960a98f37f9dff6",
       "storedAt": "2026-06-18T21:51:01.577Z"
+    },
+    {
+      "event": "delivered",
+      "finished_at_utc": "2026-06-25T08:09:14Z",
+      "revenue": 640,
+      "earned_xp": 58,
+      "distance_km": 3,
+      "session_id": "20260625T080742Z-0001",
+      "started_at_utc": "2026-06-25T08:07:42Z",
+      "game_id": "eut2",
+      "game_name": "Euro Truck Simulator 2",
+      "cargo_id": "atl_cod_flt",
+      "cargo_name": "Atlantic Cod Fillet",
+      "cargo_mass_kg": 16450.5,
+      "cargo_damage": 0.0001,
+      "income": 640,
+      "planned_distance_km": 1,
+      "delivery_time_game_minutes": 491530,
+      "current_game_time_minutes": 491191,
+      "market": "cargo_market",
+      "cargo_loaded": true,
+      "special_job": false,
+      "source": {
+        "city": "Hamburg",
+        "company": "AI Automotive"
+      },
+      "destination": {
+        "city": "Hamburg",
+        "company": "Deutsche Frachthäfen"
+      },
+      "auto_park_used": false,
+      "auto_load_used": false,
+      "timestamp": "2026-06-25T08:09:14Z",
+      "game": "Euro Truck Simulator 2",
+      "cargo": "Atlantic Cod Fillet",
+      "route": "Hamburg (AI Automotive) -> Hamburg (Deutsche Frachthäfen)",
+      "distance": 3,
+      "damage": 0.0001,
+      "_trackerKey": "f548637e83e0c58dd0a7c7e9a7ffee5e8ae59da4",
+      "storedAt": "2026-06-25T08:09:18.452Z"
+    },
+    {
+      "event": "delivered",
+      "finished_at_utc": "2026-06-25T08:17:53Z",
+      "revenue": 640,
+      "earned_xp": 107,
+      "distance_km": 2,
+      "session_id": "20260625T081621Z-0001",
+      "started_at_utc": "2026-06-25T08:16:21Z",
+      "game_id": "eut2",
+      "game_name": "Euro Truck Simulator 2",
+      "cargo_id": "atl_cod_flt",
+      "cargo_name": "Atlantic Cod Fillet",
+      "cargo_mass_kg": 16450.5,
+      "cargo_damage": 0,
+      "income": 640,
+      "planned_distance_km": 1,
+      "delivery_time_game_minutes": 491632,
+      "current_game_time_minutes": 491293,
+      "market": "cargo_market",
+      "cargo_loaded": true,
+      "special_job": false,
+      "source": {
+        "city": "Hamburg",
+        "company": "Deutsche Frachthäfen"
+      },
+      "destination": {
+        "city": "Hamburg",
+        "company": "AI Automotive"
+      },
+      "auto_park_used": false,
+      "auto_load_used": false,
+      "truck": {
+        "id": "vehicle.man.tgx_2020",
+        "name": "MAN",
+        "model": {
+          "id": "vehicle.man.tgx_2020",
+          "name": "TGX"
+        }
+      },
+      "topSpeed": 59.73,
+      "fuel_burned": 1.0299999999999727,
+      "timestamp": "2026-06-25T08:17:53Z",
+      "game": "Euro Truck Simulator 2",
+      "cargo": "Atlantic Cod Fillet",
+      "route": "Hamburg (Deutsche Frachthäfen) -> Hamburg (AI Automotive)",
+      "distance": 2,
+      "damage": 0,
+      "_trackerKey": "43a0a7c4f4b733212017f7c335919d786e34613b",
+      "storedAt": "2026-06-25T08:17:56.231Z"
     }
   ]
 }

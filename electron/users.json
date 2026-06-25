@@ -38,13 +38,7 @@
           "fuel",
           "damage",
           "odometer",
-          "speedLimit",
-          "cruise",
-          "systems",
-          "lights",
-          "warnings",
-          "temps",
-          "pressure"
+          "speedLimit"
         ]
       }
     }

@@ -1322,6 +1322,877 @@
           }
         }
       }
+    },
+    {
+      "id": "f548637e83e0c58dd0a7c7e9a7ffee5e8ae59da4",
+      "jobKey": "f548637e83e0c58dd0a7c7e9a7ffee5e8ae59da4",
+      "jobId": "f548637e83e0c58dd0a7c7e9a7ffee5e8ae59da4",
+      "status": "sent",
+      "attempts": 2,
+      "targetUrl": "https://hub.jastukvtc.com/complete-job",
+      "createdAt": "2026-06-25T08:12:02.273Z",
+      "updatedAt": "2026-06-25T08:13:15.050Z",
+      "sentAt": "2026-06-25T08:13:15.050Z",
+      "lastAttemptAt": "2026-06-25T08:13:14.433Z",
+      "lastError": null,
+      "responseStatus": 200,
+      "responseData": {
+        "success": true,
+        "job": {
+          "id": 1564,
+          "autoParked": false,
+          "isTruckersMP": false,
+          "isConvoyFeature": false,
+          "isSpecial": false,
+          "isOffer": false,
+          "isSim": false,
+          "driver": {
+            "steamid": "76561199119727915",
+            "name": "Nico264dev"
+          },
+          "source": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "ai_automotive",
+              "name": "AI Automotive"
+            }
+          },
+          "destination": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "deutsche_frachth_fen",
+              "name": "Deutsche Frachthäfen"
+            }
+          },
+          "cargo": {
+            "id": "atlantic_cod_fillet",
+            "name": "Atlantic Cod Fillet",
+            "mass": 0,
+            "unit_mass": 0,
+            "damage": 0.0001,
+            "language": "en"
+          },
+          "truck": {
+            "id": "unknown",
+            "name": "unknown",
+            "model": {
+              "id": "unknown",
+              "name": "unknown"
+            },
+            "ownTruck": true
+          },
+          "topSpeed": "0",
+          "avgSpeed": "0",
+          "income": 640,
+          "distanceDriven": 3,
+          "plannedDistance": 1,
+          "fuel": {
+            "current": 0,
+            "burned": 0,
+            "purchased": 0
+          },
+          "realtime": {
+            "start": 1782374862000,
+            "end": 1782374954000,
+            "timeTaken": 92000
+          },
+          "truckersHubJobID": "f548637e83e0c58dd0a7c7e9a7ffee5e8ae59da4",
+          "events": [],
+          "mods": [],
+          "clientVersion": "1.0.0"
+        },
+        "user": {
+          "id": 1,
+          "steamid": "76561199119727915",
+          "name": "Nico264dev",
+          "steamName": "Nico264dev",
+          "avatar": "https://avatars.steamstatic.com/aab79f61a532f89e9554a59af1972c73535f678e_full.jpg",
+          "email": "nico264@dev.com",
+          "country": "Germany",
+          "discordId": "401649323655430144",
+          "roles": [
+            "Developer",
+            "Founder"
+          ],
+          "isAdmin": true,
+          "password": "$2b$10$kPqn2IW7d1D.mXlDL1fpL.giIHSghZWPhTh2XwLeclMqU4uXEAR2C",
+          "points": 32068,
+          "totalJobs": 56,
+          "distance": 17068,
+          "earnings": 905322,
+          "totalEvents": 5,
+          "joinedAt": "2026-04-24T00:00:00.000Z",
+          "lastActive": "2026-04-24T00:00:00.000Z",
+          "jobs": [
+            {
+              "jobId": 1,
+              "title": "Empty Pallets",
+              "distance": 2,
+              "date": "2026-04-26T13:26:54.542Z",
+              "origin": "Kassel",
+              "destination": "Dresden"
+            },
+            {
+              "jobId": 2,
+              "title": "Goat Cheese",
+              "distance": 2,
+              "date": "2026-04-26T13:43:16.978Z",
+              "origin": "Dresden",
+              "destination": "Rostock"
+            },
+            {
+              "jobId": 3,
+              "title": "Truck Rims",
+              "distance": 1,
+              "date": "2026-04-26T13:47:02.568Z",
+              "origin": "Rostock",
+              "destination": "København"
+            },
+            {
+              "jobId": 4,
+              "title": "Chewing Gums",
+              "distance": 1,
+              "date": "2026-04-26T13:53:47.797Z",
+              "origin": "København",
+              "destination": "Karlskrona"
+            },
+            {
+              "jobId": 5,
+              "title": "Tableware",
+              "distance": 1,
+              "date": "2026-04-26T14:03:43.313Z",
+              "origin": "Karlskrona",
+              "destination": "Warszawa"
+            },
+            {
+              "jobId": 7,
+              "title": "Sausages",
+              "distance": 426,
+              "date": "2026-04-26T15:53:54.622Z",
+              "origin": "Düsseldorf",
+              "destination": "Hamburg"
+            },
+            {
+              "jobId": 69,
+              "title": "Containerized Trees",
+              "distance": 281,
+              "date": "2026-04-28T10:59:07.236Z",
+              "origin": "Innsbruck",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 73,
+              "title": "Smoked Eel",
+              "distance": 429,
+              "date": "2026-04-28T11:38:33.463Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Innsbruck"
+            },
+            {
+              "jobId": 81,
+              "title": "Excavator Volvo EC220E",
+              "distance": 444,
+              "date": "2026-04-28T13:22:00.864Z",
+              "origin": "Innsbruck",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 93,
+              "title": "Sand",
+              "distance": 438,
+              "date": "2026-04-28T16:29:20.314Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Innsbruck"
+            },
+            {
+              "jobId": 94,
+              "title": "Wood Shavings",
+              "distance": 909,
+              "date": "2026-04-28T17:13:23.527Z",
+              "origin": "Innsbruck",
+              "destination": "Hamburg"
+            },
+            {
+              "jobId": 132,
+              "title": "Stone Dust",
+              "distance": 274,
+              "date": "2026-04-29T10:45:46.546Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Salzburg"
+            },
+            {
+              "jobId": 135,
+              "title": "Plastic Granules",
+              "distance": 278,
+              "date": "2026-04-29T11:12:56.282Z",
+              "origin": "Salzburg",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 137,
+              "title": "Cement",
+              "distance": 271,
+              "date": "2026-04-29T11:52:04.609Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Salzburg"
+            },
+            {
+              "jobId": 140,
+              "title": "Wood Shavings",
+              "distance": 279,
+              "date": "2026-04-29T13:36:51.865Z",
+              "origin": "Salzburg",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 171,
+              "title": "Asphalt Miller",
+              "distance": 917,
+              "date": "2026-04-29T22:31:23.094Z",
+              "origin": "Kassel",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 175,
+              "title": "Gnocchi",
+              "distance": 427,
+              "date": "2026-04-29T23:09:49.864Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Innsbruck"
+            },
+            {
+              "jobId": 181,
+              "title": "Atlantic Cod Fillet",
+              "distance": 174,
+              "date": "2026-04-29T23:40:42.404Z",
+              "origin": "Innsbruck",
+              "destination": "Salzburg"
+            },
+            {
+              "jobId": 209,
+              "title": "Watermelons",
+              "distance": 274,
+              "date": "2026-04-30T12:54:43.663Z",
+              "origin": "Salzburg",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 231,
+              "title": "Fresh Fish",
+              "distance": 269,
+              "date": "2026-04-30T21:40:47.063Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Salzburg"
+            },
+            {
+              "jobId": 235,
+              "title": "Hospital Waste",
+              "distance": 1,
+              "date": "2026-04-30T23:49:41.540Z",
+              "origin": "Innsbruck",
+              "destination": "Salzburg"
+            },
+            {
+              "jobId": 260,
+              "title": "Frozen Hake",
+              "distance": 442,
+              "date": "2026-05-01T13:41:10.864Z",
+              "origin": "Innsbruck",
+              "destination": "Klagenfurt am Wörthersee"
+            },
+            {
+              "jobId": 274,
+              "title": "Frozen Hake",
+              "distance": 269,
+              "date": "2026-05-01T22:44:54.922Z",
+              "origin": "Klagenfurt am Wörthersee",
+              "destination": "Salzburg"
+            },
+            {
+              "jobId": 292,
+              "title": "Cheese",
+              "distance": 412,
+              "date": "2026-05-02T11:25:09.973Z",
+              "origin": "Hamburg",
+              "destination": "Düsseldorf"
+            },
+            {
+              "jobId": 322,
+              "title": "Aircraft Tyres",
+              "distance": 2,
+              "date": "2026-05-03T15:46:46.286Z",
+              "origin": "Düsseldorf",
+              "destination": "Düsseldorf"
+            },
+            {
+              "jobId": 334,
+              "title": "Gummy Bears",
+              "distance": 1,
+              "date": "2026-05-03T23:37:45.362Z",
+              "origin": "Köln",
+              "destination": "Düsseldorf"
+            },
+            {
+              "jobId": 449,
+              "title": "Reinforcing Bars",
+              "distance": 70,
+              "date": "2026-05-07T14:43:07.066Z",
+              "origin": "Kirkenes",
+              "destination": "Kirkenes"
+            },
+            {
+              "jobId": 454,
+              "title": "Aluminium Ingots",
+              "distance": 709,
+              "date": "2026-05-07T15:41:06.964Z",
+              "origin": "Kirkenes",
+              "destination": "Karesuando"
+            },
+            {
+              "jobId": 457,
+              "title": "Compact Generators JCB G100RS",
+              "distance": 423,
+              "date": "2026-05-07T16:03:04.202Z",
+              "origin": "Karesuando",
+              "destination": "Luleå"
+            },
+            {
+              "jobId": 545,
+              "title": "Cut Flowers",
+              "distance": 951,
+              "date": "2026-05-09T19:54:53.766Z",
+              "origin": "Leipzig",
+              "destination": "Mannheim"
+            },
+            {
+              "jobId": 606,
+              "title": "Medical Equipment",
+              "distance": 563,
+              "date": "2026-05-11T20:14:29.353Z",
+              "origin": "München",
+              "destination": "Sümeg"
+            },
+            {
+              "jobId": 607,
+              "title": "Prosciutto",
+              "distance": 329,
+              "date": "2026-05-11T20:29:02.043Z",
+              "origin": "Sümeg",
+              "destination": "Zvolen"
+            },
+            {
+              "jobId": 608,
+              "title": "Seafood",
+              "distance": 633,
+              "date": "2026-05-11T21:02:39.462Z",
+              "origin": "Zvolen",
+              "destination": "Płock"
+            },
+            {
+              "jobId": 609,
+              "title": "Liver Paste",
+              "distance": 335,
+              "date": "2026-05-11T21:25:26.666Z",
+              "origin": "Płock",
+              "destination": "Ełk"
+            },
+            {
+              "jobId": 611,
+              "title": "Chicken Meat",
+              "distance": 671,
+              "date": "2026-05-11T22:07:22.947Z",
+              "origin": "Ełk",
+              "destination": "Сарни"
+            },
+            {
+              "jobId": 613,
+              "title": "Prosciutto",
+              "distance": 574,
+              "date": "2026-05-11T22:38:54.644Z",
+              "origin": "Сарни",
+              "destination": "Поляниця"
+            },
+            {
+              "jobId": 656,
+              "title": "Canned Beef",
+              "distance": 619,
+              "date": "2026-05-13T22:50:01.672Z",
+              "origin": "Поляниця",
+              "destination": "Oradea"
+            },
+            {
+              "jobId": 693,
+              "title": "Pickups",
+              "distance": 788,
+              "date": "2026-05-15T15:15:12.496Z",
+              "origin": "Oradea",
+              "destination": "Плевен"
+            },
+            {
+              "jobId": 699,
+              "title": "Cut Flowers",
+              "distance": 693,
+              "date": "2026-05-15T20:35:18.401Z",
+              "origin": "TruckersMP HQ",
+              "destination": "Hamburg"
+            },
+            {
+              "jobId": 758,
+              "title": "Frozen Hake",
+              "distance": 130,
+              "date": "2026-05-18T15:54:15.243Z",
+              "origin": "Hamburg",
+              "destination": "Uelzen"
+            },
+            {
+              "jobId": 1195,
+              "title": "Used Packaging",
+              "distance": 1,
+              "date": "2026-06-07T15:48:28.861Z",
+              "origin": "Pirmasens",
+              "destination": "Pirmasens"
+            },
+            {
+              "jobId": 1196,
+              "title": "Empty Pallets",
+              "distance": 24,
+              "date": "2026-06-07T16:54:33.346Z",
+              "origin": "Pirmasens",
+              "destination": "Hauenstein"
+            },
+            {
+              "jobId": 1198,
+              "title": "Cut Flowers",
+              "distance": 483,
+              "date": "2026-06-07T18:38:04.043Z",
+              "origin": "Algeciras",
+              "destination": "Setúbal"
+            },
+            {
+              "jobId": 1221,
+              "title": "IBC Containers",
+              "distance": 28,
+              "date": "2026-06-09T14:20:05.185Z",
+              "origin": "Pirmasens",
+              "destination": "Bann"
+            },
+            {
+              "jobId": 1223,
+              "title": "Fresh Herbs",
+              "distance": 2,
+              "date": "2026-06-09T16:18:48.056Z",
+              "origin": "Badajoz",
+              "destination": "Alta"
+            },
+            {
+              "jobId": 1224,
+              "title": "Prosciutto",
+              "distance": 1,
+              "date": "2026-06-09T17:30:30.208Z",
+              "origin": "Duisburg",
+              "destination": "Brussel"
+            },
+            {
+              "jobId": 1225,
+              "title": "Smoked Sprats",
+              "distance": 2,
+              "date": "2026-06-09T17:36:26.062Z",
+              "origin": "Brussel",
+              "destination": "Antwerpen"
+            },
+            {
+              "jobId": 1228,
+              "title": "Medical Equipment",
+              "distance": 1,
+              "date": "2026-06-09T21:05:47.999Z",
+              "origin": "Antwerpen",
+              "destination": "Groningen"
+            },
+            {
+              "jobId": 1246,
+              "title": "Canned Pork",
+              "distance": 1,
+              "date": "2026-06-10T11:43:23.043Z",
+              "origin": "Livorno",
+              "destination": "Roma"
+            },
+            {
+              "jobId": 1248,
+              "title": "Cut Flowers",
+              "distance": 3,
+              "date": "2026-06-10T13:51:29.843Z",
+              "origin": "Roma",
+              "destination": "Roma"
+            },
+            {
+              "jobId": 1307,
+              "title": "Cut Flowers",
+              "distance": 900,
+              "date": "2026-06-12T19:06:25.913Z",
+              "origin": "Torino",
+              "destination": "Bern"
+            },
+            {
+              "jobId": 1469,
+              "title": "Beverages",
+              "distance": 2,
+              "date": "2026-06-18T21:54:22.233Z",
+              "origin": "Bern",
+              "destination": "Bern"
+            },
+            {
+              "jobId": 1470,
+              "title": "Cut Flowers",
+              "distance": 900,
+              "date": "2026-06-18T21:54:32.543Z",
+              "origin": "Torino",
+              "destination": "Bern"
+            },
+            {
+              "jobId": 1471,
+              "title": "Beverages",
+              "distance": 2,
+              "date": "2026-06-18T21:54:43.247Z",
+              "origin": "Bern",
+              "destination": "Bern"
+            },
+            {
+              "jobId": 1563,
+              "title": "Atlantic Cod Fillet",
+              "distance": 3,
+              "date": "2026-06-25T08:12:04.690Z",
+              "origin": "Hamburg",
+              "destination": "Hamburg"
+            },
+            {
+              "jobId": 1564,
+              "title": "Atlantic Cod Fillet",
+              "distance": 3,
+              "date": "2026-06-25T08:13:16.864Z",
+              "origin": "Hamburg",
+              "destination": "Hamburg"
+            }
+          ],
+          "events": [],
+          "driverrank": "Skilled Driver",
+          "vtcJoinDate": "2026-04-24T00:00:00.000Z",
+          "status": "Active",
+          "lastLogin": null,
+          "loginAttempts": 0,
+          "accountLocked": false,
+          "convoyrank": "No Rank",
+          "banner": "",
+          "discordUsername": "nico_264",
+          "discordDisplayName": "</> Nico_264🍁",
+          "attendedEvents": [
+            6,
+            9,
+            15,
+            29,
+            5
+          ],
+          "resetPasswordToken": "f6d3190d2ab7359c4959e6d3fd840271b9c9e6acf02c15edf8f9dafc3188e3e3",
+          "resetPasswordExpire": 1780064447348,
+          "lastPasswordResetRequest": 1780063547348
+        }
+      },
+      "job": {
+        "event": "delivered",
+        "finished_at_utc": "2026-06-25T08:09:14Z",
+        "revenue": 640,
+        "earned_xp": 58,
+        "distance_km": 3,
+        "session_id": "20260625T080742Z-0001",
+        "started_at_utc": "2026-06-25T08:07:42Z",
+        "game_id": "eut2",
+        "game_name": "Euro Truck Simulator 2",
+        "cargo_id": "atl_cod_flt",
+        "cargo_name": "Atlantic Cod Fillet",
+        "cargo_mass_kg": 16450.5,
+        "cargo_damage": 0.0001,
+        "income": 640,
+        "planned_distance_km": 1,
+        "delivery_time_game_minutes": 491530,
+        "current_game_time_minutes": 491191,
+        "market": "cargo_market",
+        "cargo_loaded": true,
+        "special_job": false,
+        "source": {
+          "city": "Hamburg",
+          "company": "AI Automotive"
+        },
+        "destination": {
+          "city": "Hamburg",
+          "company": "Deutsche Frachthäfen"
+        },
+        "auto_park_used": false,
+        "auto_load_used": false,
+        "timestamp": "2026-06-25T08:09:14Z",
+        "game": "Euro Truck Simulator 2",
+        "cargo": "Atlantic Cod Fillet",
+        "route": "Hamburg (AI Automotive) -> Hamburg (Deutsche Frachthäfen)",
+        "distance": 3,
+        "damage": 0.0001
+      },
+      "payload": {
+        "object": "event",
+        "type": "job.delivered",
+        "data": {
+          "driver": {
+            "steamID": "76561199119727915",
+            "name": "</> Nico_264🍁",
+            "avatar": "a_1613f89c3a65d9cb3a2e4cdf40f02fd4"
+          },
+          "source": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "ai_automotive",
+              "name": "AI Automotive"
+            }
+          },
+          "destination": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "deutsche_frachth_fen",
+              "name": "Deutsche Frachthäfen"
+            }
+          },
+          "cargo": {
+            "id": "atlantic_cod_fillet",
+            "name": "Atlantic Cod Fillet",
+            "mass": 16450.5,
+            "unit_mass": 0,
+            "damage": 0.01,
+            "language": "en"
+          },
+          "truck": {
+            "id": "unknown",
+            "name": "unknown",
+            "model": {
+              "id": "unknown",
+              "name": "unknown"
+            },
+            "ownTruck": true
+          },
+          "topSpeed": 0,
+          "avgSpeed": 0,
+          "income": 640,
+          "distanceDriven": 3,
+          "plannedDistance": 1,
+          "fuel": {
+            "current": 0,
+            "burned": 0,
+            "purchased": 0
+          },
+          "realtime": {
+            "start": "2026-06-25T08:07:42Z",
+            "end": "2026-06-25T08:09:14Z",
+            "timeTaken": 92000
+          }
+        }
+      }
+    },
+    {
+      "id": "43a0a7c4f4b733212017f7c335919d786e34613b",
+      "jobKey": "43a0a7c4f4b733212017f7c335919d786e34613b",
+      "jobId": "43a0a7c4f4b733212017f7c335919d786e34613b",
+      "status": "sent",
+      "attempts": 1,
+      "targetUrl": "https://hub.jastukvtc.com/complete-job",
+      "createdAt": "2026-06-25T08:18:25.560Z",
+      "updatedAt": "2026-06-25T08:18:26.090Z",
+      "sentAt": "2026-06-25T08:18:26.090Z",
+      "lastAttemptAt": "2026-06-25T08:18:25.598Z",
+      "lastError": null,
+      "responseStatus": 200,
+      "responseData": {
+        "success": true,
+        "job": {
+          "id": 1563,
+          "autoParked": false,
+          "isTruckersMP": false,
+          "isConvoyFeature": false,
+          "isSpecial": false,
+          "isOffer": false,
+          "isSim": false,
+          "driver": {
+            "steamid": "76561199119727915",
+            "name": "Nico264dev"
+          },
+          "source": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "deutsche_frachth_fen",
+              "name": "Deutsche Frachthäfen"
+            }
+          },
+          "destination": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "ai_automotive",
+              "name": "AI Automotive"
+            }
+          },
+          "cargo": {
+            "id": "atlantic_cod_fillet",
+            "name": "Atlantic Cod Fillet",
+            "mass": 16450.5,
+            "unit_mass": 0,
+            "damage": 0,
+            "language": "en"
+          },
+          "truck": {
+            "id": "vehicle.man.tgx_2020",
+            "name": "MAN",
+            "model": {
+              "id": "vehicle.man.tgx_2020",
+              "name": "TGX"
+            },
+            "ownTruck": true
+          },
+          "topSpeed": "59.73",
+          "avgSpeed": "0",
+          "income": 640,
+          "distanceDriven": 2,
+          "plannedDistance": 1,
+          "fuel": {
+            "current": 0,
+            "burned": 1.0299999999999727,
+            "purchased": 0
+          },
+          "realtime": {
+            "start": 1782375381000,
+            "end": 1782375473000,
+            "timeTaken": 92000
+          },
+          "truckersHubJobID": "43a0a7c4f4b733212017f7c335919d786e34613b",
+          "events": [],
+          "mods": [],
+          "clientVersion": "1.0.0",
+          "pendingReview": true,
+          "pendingReviewReason": "Top speed of 215.0 km/h exceeds the 171 km/h limit"
+        },
+        "pendingReview": true
+      },
+      "job": {
+        "event": "delivered",
+        "finished_at_utc": "2026-06-25T08:17:53Z",
+        "revenue": 640,
+        "earned_xp": 107,
+        "distance_km": 2,
+        "session_id": "20260625T081621Z-0001",
+        "started_at_utc": "2026-06-25T08:16:21Z",
+        "game_id": "eut2",
+        "game_name": "Euro Truck Simulator 2",
+        "cargo_id": "atl_cod_flt",
+        "cargo_name": "Atlantic Cod Fillet",
+        "cargo_mass_kg": 16450.5,
+        "cargo_damage": 0,
+        "income": 640,
+        "planned_distance_km": 1,
+        "delivery_time_game_minutes": 491632,
+        "current_game_time_minutes": 491293,
+        "market": "cargo_market",
+        "cargo_loaded": true,
+        "special_job": false,
+        "source": {
+          "city": "Hamburg",
+          "company": "Deutsche Frachthäfen"
+        },
+        "destination": {
+          "city": "Hamburg",
+          "company": "AI Automotive"
+        },
+        "auto_park_used": false,
+        "auto_load_used": false,
+        "timestamp": "2026-06-25T08:17:53Z",
+        "game": "Euro Truck Simulator 2",
+        "cargo": "Atlantic Cod Fillet",
+        "route": "Hamburg (Deutsche Frachthäfen) -> Hamburg (AI Automotive)",
+        "distance": 2,
+        "damage": 0
+      },
+      "payload": {
+        "object": "event",
+        "type": "job.delivered",
+        "data": {
+          "driver": {
+            "steamID": "76561199119727915",
+            "name": "</> Nico_264🍁",
+            "avatar": "a_1613f89c3a65d9cb3a2e4cdf40f02fd4"
+          },
+          "source": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "deutsche_frachth_fen",
+              "name": "Deutsche Frachthäfen"
+            }
+          },
+          "destination": {
+            "city": {
+              "id": "hamburg",
+              "name": "Hamburg"
+            },
+            "company": {
+              "id": "ai_automotive",
+              "name": "AI Automotive"
+            }
+          },
+          "cargo": {
+            "id": "atlantic_cod_fillet",
+            "name": "Atlantic Cod Fillet",
+            "mass": 16450.5,
+            "unit_mass": 0,
+            "damage": 0,
+            "language": "en"
+          },
+          "truck": {
+            "id": "unknown",
+            "name": "unknown",
+            "model": {
+              "id": "unknown",
+              "name": "unknown"
+            },
+            "ownTruck": true
+          },
+          "topSpeed": 0,
+          "avgSpeed": 0,
+          "income": 640,
+          "distanceDriven": 2,
+          "plannedDistance": 1,
+          "fuel": {
+            "current": 0,
+            "burned": 0,
+            "purchased": 0
+          },
+          "realtime": {
+            "start": "2026-06-25T08:16:21Z",
+            "end": "2026-06-25T08:17:53Z",
+            "timeTaken": 92000
+          }
+        }
+      }
     }
   ]
 }
