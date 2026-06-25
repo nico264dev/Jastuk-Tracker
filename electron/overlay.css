@@ -1,0 +1,232 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #f3fff2;
+  user-select: none;
+}
+
+.overlay-bar {
+  position: relative;
+  width: 100vw;
+  height: 144px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  align-content: center;
+  padding: 12px 16px;
+  background: rgba(38, 58, 45, 0.86);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  opacity: 1;
+  transform: translateZ(0);
+  will-change: opacity;
+  contain: layout paint;
+  transition: opacity 80ms linear;
+}
+
+body[data-visible="false"] .overlay-bar {
+  opacity: 0;
+}
+
+.overlay-logo-center {
+  position: relative;
+  left: auto;
+  top: auto;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  object-fit: contain;
+  pointer-events: none;
+  transform: none;
+}
+
+body[data-position="bottom"] .overlay-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: none;
+}
+
+.overlay-brand,
+.overlay-stat {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.overlay-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 260px;
+  min-height: 48px;
+  max-width: 420px;
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: rgba(10, 24, 16, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.overlay-brand div,
+.overlay-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.overlay-stat {
+  flex: 1 1 104px;
+  min-width: 88px;
+  max-width: 168px;
+  min-height: 48px;
+  justify-content: center;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(10, 24, 16, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.overlay-brand strong,
+.overlay-stat strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.overlay-brand span,
+.overlay-stat span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(243, 255, 242, 0.78);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.overlay-brand strong {
+  font-size: 15px;
+}
+
+.overlay-brand span {
+  font-size: 10px;
+}
+
+.overlay-small strong {
+  font-size: 13px;
+}
+
+.overlay-stat span i {
+  width: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-right: 4px;
+  text-align: center;
+}
+
+.overlay-wide {
+  flex: 2 1 220px;
+  max-width: 420px;
+}
+
+.overlay-brand span,
+.overlay-wide strong {
+  white-space: normal;
+}
+
+.overlay-wide strong {
+  display: -webkit-box;
+  min-height: 27px;
+  line-height: 1.18;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.overlay-brand strong {
+  white-space: normal;
+  line-height: 1.15;
+}
+
+.overlay-brand span {
+  line-height: 1.2;
+}
+
+body[data-density="packed"] .overlay-bar {
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+body[data-density="packed"] .overlay-logo-center {
+  width: 36px;
+  height: 36px;
+  flex-basis: 36px;
+}
+
+body[data-density="packed"] .overlay-brand {
+  flex-basis: 230px;
+  min-height: 44px;
+  padding: 7px 10px;
+}
+
+body[data-density="packed"] .overlay-stat {
+  flex-basis: 90px;
+  min-width: 78px;
+  max-width: 148px;
+  min-height: 43px;
+  padding: 6px 8px;
+}
+
+body[data-density="packed"] .overlay-wide {
+  flex-basis: 176px;
+  max-width: 320px;
+}
+
+body[data-density="packed"] .overlay-brand strong,
+body[data-density="packed"] .overlay-stat strong {
+  font-size: 12px;
+}
+
+body[data-density="packed"] .overlay-brand span,
+body[data-density="packed"] .overlay-stat span {
+  font-size: 8px;
+}
+
+body[data-density="packed"] .overlay-stat span i {
+  width: 10px;
+  margin-right: 3px;
+}
+
+@media (max-width: 900px) {
+  .overlay-bar {
+    height: 144px;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .overlay-brand {
+    flex-basis: 220px;
+  }
+
+  .overlay-stat {
+    flex-basis: 82px;
+    min-width: 70px;
+    padding: 6px 7px;
+  }
+
+  .overlay-wide {
+    flex-basis: 150px;
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "jobs": [
+    {
+      "event": "delivered",
+      "finished_at_utc": "2026-06-12T19:06:22Z",
+      "revenue": 19652,
+      "earned_xp": 1180,
+      "distance_km": 900,
+      "session_id": "20260612T172521Z-0001",
+      "started_at_utc": "2026-06-12T17:25:21Z",
+      "game_id": "eut2",
+      "game_name": "Euro Truck Simulator 2",
+      "cargo_id": "cut_flowers",
+      "cargo_name": "Cut Flowers",
+      "cargo_mass_kg": 1758.9,
+      "cargo_damage": 0.0043,
+      "income": 19652,
+      "planned_distance_km": 432,
+      "delivery_time_game_minutes": 491014,
+      "current_game_time_minutes": 490262,
+      "market": "cargo_market",
+      "cargo_loaded": true,
+      "special_job": false,
+      "source": {
+        "city": "Torino",
+        "company": "TransiNet"
+      },
+      "destination": {
+        "city": "Bern",
+        "company": "Tree-ET"
+      },
+      "auto_park_used": false,
+      "auto_load_used": false,
+      "timestamp": "2026-06-12T19:06:22Z",
+      "game": "Euro Truck Simulator 2",
+      "cargo": "Cut Flowers",
+      "route": "Torino (TransiNet) -> Bern (Tree-ET)",
+      "distance": 900,
+      "damage": 0.0043,
+      "_trackerKey": "8e6ec6b763bd792d49f101c8c9ed6bdcbd4f62f8",
+      "storedAt": "2026-06-12T19:06:27.520Z"
+    },
+    {
+      "event": "delivered",
+      "finished_at_utc": "2026-06-18T21:51:01Z",
+      "revenue": 646,
+      "earned_xp": 2,
+      "distance_km": 2,
+      "session_id": "20260618T214922Z-0001",
+      "started_at_utc": "2026-06-18T21:49:22Z",
+      "game_id": "eut2",
+      "game_name": "Euro Truck Simulator 2",
+      "cargo_id": "beverages",
+      "cargo_name": "Beverages",
+      "cargo_mass_kg": 23525.701,
+      "cargo_damage": 0.0076,
+      "income": 646,
+      "planned_distance_km": 1,
+      "delivery_time_game_minutes": 491297,
+      "current_game_time_minutes": 491067,
+      "market": "cargo_market",
+      "cargo_loaded": true,
+      "special_job": false,
+      "source": {
+        "city": "Bern",
+        "company": "Charmey"
+      },
+      "destination": {
+        "city": "Bern",
+        "company": "SellPlan"
+      },
+      "auto_park_used": true,
+      "auto_load_used": true,
+      "timestamp": "2026-06-18T21:51:01Z",
+      "game": "Euro Truck Simulator 2",
+      "cargo": "Beverages",
+      "route": "Bern (Charmey) -> Bern (SellPlan)",
+      "distance": 2,
+      "damage": 0.0076,
+      "_trackerKey": "6b402cbc83d741c6dd0b9f9a3960a98f37f9dff6",
+      "storedAt": "2026-06-18T21:51:01.577Z"
+    }
+  ]
+}

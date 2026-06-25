@@ -1,0 +1,20 @@
+{
+  "DISCORD_CLIENT_ID": "1497204243403116566",
+  "DISCORD_RPC_CLIENT_ID": "1497022420500873246",
+  "DISCORD_GUILD_ID": "1496920531696484504",
+  "DISCORD_REQUIRED_ROLE_ID": "1496990127581302916",
+  "DRIVER_USERS_URL": "https://hub.jastukvtc.com/api/drivers/users",
+  "PROFILE_DRIVERS_URL": "https://hub.jastukvtc.com/api/vtc/drivers",
+  "DRIVERSHUB_COMPLETE_JOB_URL": "http://5.231.5.90:8082/complete-job",
+  "ADMIN_DISCORD_IDS": "1496983353037951167,1496920531721650428,1496983823953428520",
+  "DRIVER_USERS_TOKEN": "JYCS8ERTvnQHBcgabqjK340e9ou2GfL5",
+  "LIVE_PUSH_URL": "https://api.jastukvtc.com/live/drivers",
+  "LIVE_DRIVERS_URL": "https://api.jastukvtc.com/live/drivers",
+  "DISCORD_RPC_LARGE_IMAGE": "logo",
+  "DISCORD_RPC_BUTTON_URL": "https://hub.jastukvtc.com",
+  "DISCORD_RPC_SECOND_BUTTON_LABEL": "Apply Today",
+  "DISCORD_RPC_SECOND_BUTTON_URL": "https://truckersmp.com/vtc/88850",
+  "OVERLAY_ENABLED": "true",
+  "OVERLAY_POSITION": "top",
+  "OVERLAY_OPACITY": "0.72"
+}

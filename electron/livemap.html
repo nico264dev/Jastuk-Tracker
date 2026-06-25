@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Map - Jastuk Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="livemap">
+  <svg class="svg-filters" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="street-grey-filter" color-interpolation-filters="sRGB">
+      <feColorMatrix
+        in="SourceGraphic"
+        type="matrix"
+        values="0 0 0 0 0
+                0 0 0 0 0
+                0 0 0 0 0
+                -5 2 4 0 -1.2"
+        result="streetMask"
+      />
+      <feComponentTransfer in="streetMask" result="streetThreshold">
+        <feFuncA type="table" tableValues="0 0 0.85 1 1" />
+      </feComponentTransfer>
+      <feFlood flood-color="#CDCDCD" result="streetColor" />
+      <feComposite in="streetColor" in2="streetThreshold" operator="in" result="greyStreets" />
+
+      <feComposite in="greyStreets" in2="SourceGraphic" operator="over" />
+    </filter>
+  </svg>
+
+  <div class="app-shell">
+    <div data-partial="sidebar"></div>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <div class="page-title">Live Map</div>
+        </div>
+        <div class="map-mode-tabs" role="tablist" aria-label="Map mode">
+          <button class="map-mode active" type="button" data-map-mode="eut2">ETS2</button>
+          <button class="map-mode" type="button" data-map-mode="ats">ATS</button>
+          <button class="map-mode" type="button" data-map-mode="promods">ProMods</button>
+        </div>
+      </header>
+
+      <section class="livemap-layout">
+        <article class="livemap-stage">
+          <div class="livemap-toolbar">
+            <div class="livemap-metrics">
+              <div>
+                <div class="online-status-label">Drivers</div>
+                <div id="livemap-driver-count" class="online-status-value">0</div>
+              </div>
+              <div>
+                <div class="online-status-label">Updated</div>
+                <div id="livemap-updated" class="online-status-value">-</div>
+              </div>
+            </div>
+            <div class="livemap-controls" aria-label="Map controls">
+              <button class="icon-button livemap-control" type="button" data-map-action="zoom-out" title="Zoom out" aria-label="Zoom out">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+              <button class="icon-button livemap-control" type="button" data-map-action="reset" title="Reset view" aria-label="Reset view">
+                <i class="fa-solid fa-expand"></i>
+              </button>
+              <button class="icon-button livemap-control" type="button" data-map-action="zoom-in" title="Zoom in" aria-label="Zoom in">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div id="livemap-canvas" class="livemap-canvas" aria-label="Live driver map">
+            <div id="livemap-layer" class="livemap-layer">
+              <div id="livemap-tiles" class="livemap-tiles" aria-hidden="true"></div>
+              <svg id="livemap-svg" class="livemap-svg" viewBox="0 0 1000 620" role="img"></svg>
+            </div>
+            <div id="livemap-empty" class="livemap-empty">Waiting for live driver coordinates...</div>
+            <div id="livemap-detail" class="livemap-popup" hidden></div>
+          </div>
+        </article>
+      </section>
+
+      <div data-partial="footer"></div>
+    </main>
+  </div>
+
+  <script src="partials/layout.js"></script>
+  <script src="livemap-renderer.js"></script>
+</body>
+</html>

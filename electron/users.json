@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "id": "401649323655430144",
+      "username": "nico_264",
+      "displayName": "</> Nico_264🍁",
+      "discriminator": "0",
+      "avatar": "a_1613f89c3a65d9cb3a2e4cdf40f02fd4",
+      "source": "discord",
+      "role": "Tracker user",
+      "roles": [
+        "1496983353037951167",
+        "1496990127581302916",
+        "1496991725733023884",
+        "1496932004363505805",
+        "1497229819736232077",
+        "1496989360372056177",
+        "1496920531721650426",
+        "1497006180604579931",
+        "1496920531721650430",
+        "1496920531721650431"
+      ],
+      "enabled": true,
+      "lastLoginAt": "2026-06-25T07:09:32.434Z",
+      "overlaySettings": {
+        "enabled": true,
+        "requireGameFocus": true,
+        "position": "top",
+        "opacity": 0.28,
+        "fields": [
+          "logo",
+          "driver",
+          "speed",
+          "rpm",
+          "gear",
+          "truck",
+          "route",
+          "fuel",
+          "damage",
+          "odometer",
+          "speedLimit",
+          "cruise",
+          "systems",
+          "lights",
+          "warnings",
+          "temps",
+          "pressure"
+        ]
+      }
+    }
+  ]
+}

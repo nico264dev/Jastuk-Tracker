@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jastuk Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="dashboard">
+  <div class="app-shell">
+    <div data-partial="sidebar"></div>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div id="page-subtitle" class="page-subtitle">Welcome back!</div>
+        </div>
+      </header>
+
+      <section id="login-page-tab" class="panel active">
+        <article class="card card-full login-card">
+          <h3><i class="fa-brands fa-discord"></i> Discord login required</h3>
+          <p class="help-text">Please sign in with Discord using your saved OAuth credentials. Once successful, you will be redirected to the tracker dashboard.</p>
+          <button id="login-page-button" class="button button-primary" type="button">Login with Discord</button>
+          <button id="go-to-account-button" class="button button-secondary" type="button">Configure Discord credentials</button>
+          <p id="login-status-message" class="help-text">If you have not saved your Discord credentials yet, open the Account tab and enter your Discord App settings.</p>
+        </article>
+      </section>
+
+      <section id="dashboard-tab" class="panel">
+        <div class="section-heading">
+          <h2>Total Statistics</h2>
+        </div>
+        <div class="grid-4 stats-grid">
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <h3>Total jobs</h3>
+            <div id="hub-stats-jobs" class="stat-value">-</div>
+          </article>
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-route"></i></div>
+            <h3>Total distance covered</h3>
+            <div id="hub-stats-distance" class="stat-value">-</div>
+          </article>
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+            <h3>Total earnings</h3>
+            <div id="hub-stats-earnings" class="stat-value">-</div>
+          </article>
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-gas-pump"></i></div>
+            <h3>Total fuel consumed</h3>
+            <div id="hub-stats-fuel" class="stat-value">-</div>
+          </article>
+        </div>
+        <div class="section-heading">
+          <h2>Personal Statistics</h2>
+        </div>
+        <div class="grid-4 stats-grid personal-stats-grid">
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+            <h3>Personal jobs</h3>
+            <div id="personal-stats-jobs" class="stat-value">-</div>
+          </article>
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-road"></i></div>
+            <h3>Personal distance</h3>
+            <div id="personal-stats-distance" class="stat-value">-</div>
+          </article>
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+            <h3>Personal earnings</h3>
+            <div id="personal-stats-earnings" class="stat-value">-</div>
+          </article>
+          <article class="card stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-shield-heart"></i></div>
+            <h3>Average damage</h3>
+            <div id="personal-stats-damage" class="stat-value">-</div>
+          </article>
+        </div>
+        <article class="card card-full route-recommendation-card">
+          <div class="route-card-header">
+            <h3><i class="fa-solid fa-route"></i> Recommended route</h3>
+            <div class="route-actions">
+              <select id="route-game-select" aria-label="Route game">
+                <option value="eut2">ETS2</option>
+                <option value="ats">ATS</option>
+              </select>
+              <button id="route-random-button" class="button button-primary" type="button">
+                <i class="fa-solid fa-shuffle"></i> Recommend
+              </button>
+            </div>
+          </div>
+          <div class="route-recommendation-layout">
+            <div class="route-stop">
+              <span>From</span>
+              <strong id="route-from-city">-</strong>
+              <small id="route-from-meta">Select DLC in Account settings</small>
+            </div>
+            <div class="route-direction" aria-hidden="true">
+              <i class="fa-solid fa-arrow-right-long"></i>
+            </div>
+            <div class="route-stop">
+              <span>To</span>
+              <strong id="route-to-city">-</strong>
+              <small id="route-to-meta">Then generate a route</small>
+            </div>
+          </div>
+          <div class="route-summary">
+            <span id="route-distance">Estimated distance: -</span>
+            <span id="route-dlc-summary">Available cities: -</span>
+          </div>
+        </article>
+        <article class="card card-full recent-jobs-card">
+          <h3><i class="fa-solid fa-list-check"></i> Recent 20 completed jobs</h3>
+          <div class="table-wrap">
+            <table class="jobs-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Driver</th>
+                  <th>Game</th>
+                  <th>Cargo</th>
+                  <th>Route</th>
+                  <th>Distance</th>
+                  <th>Income</th>
+                  <th>Damage</th>
+                </tr>
+              </thead>
+              <tbody id="recent-jobs-table">
+                <tr><td colspan="8">Loading completed jobs...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="history-tab" class="panel">
+        <article class="card card-full">
+          <h3><i class="fa-solid fa-clock-rotate-left"></i> Event history</h3>
+          <div id="history-list" class="history-list">Loading history...</div>
+        </article>
+      </section>
+
+      <section id="members-tab" class="panel">
+        <article class="card card-full members-card">
+          <div class="admin-card-header">
+            <div>
+              <h3><i class="fa-solid fa-users"></i> Members</h3>
+              <p id="members-summary" class="help-text">Loading members...</p>
+            </div>
+            <button id="members-refresh-button" class="button button-secondary" type="button">
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table class="jobs-table members-table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Status</th>
+                  <th>Current activity</th>
+                  <th>Jobs</th>
+                  <th>Distance</th>
+                  <th>Earnings</th>
+                  <th>Last update</th>
+                </tr>
+              </thead>
+              <tbody id="members-table">
+                <tr><td colspan="7">Loading members...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="members-pagination">
+            <button id="members-prev-page" class="button button-secondary button-small" type="button">
+              <i class="fa-solid fa-chevron-left"></i> Previous
+            </button>
+            <span id="members-page-status" class="members-page-status">Page 1 of 1</span>
+            <button id="members-next-page" class="button button-secondary button-small" type="button">
+              Next <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <section id="raw-tab" class="panel">
+        <article class="card card-full">
+          <h3><i class="fa-solid fa-code"></i> Raw JSON snapshot</h3>
+          <pre id="raw-json" class="raw-json">Waiting for data...</pre>
+        </article>
+      </section>
+
+      <section id="admin-tab" class="panel">
+        <article class="card card-full admin-jobs-card">
+          <div class="admin-card-header">
+            <div>
+              <h3><i class="fa-solid fa-screwdriver-wrench"></i> DriversHub job delivery</h3>
+              <p id="admin-delivery-summary" class="help-text">Loading job delivery log...</p>
+            </div>
+            <button id="admin-refresh-deliveries" class="button button-secondary" type="button">
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table class="jobs-table admin-jobs-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Job</th>
+                  <th>Route</th>
+                  <th>Status</th>
+                  <th>Attempts</th>
+                  <th>Last message</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-deliveries-table">
+                <tr><td colspan="7">Loading job delivery log...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="account-tab" class="panel">
+        <article class="card card-full">
+          <h3><i class="fa-solid fa-user-gear"></i> Account access</h3>
+          <div class="local-users-panel">
+            <div>
+              <div id="local-users-status" class="help-text">Loading local users...</div>
+            </div>
+            <div id="local-users-list" class="local-users-list"></div>
+          </div>
+          <div class="settings-section-title">
+            <h3><i class="fa-brands fa-discord"></i> Discord login</h3>
+            <span>Used to unlock the tracker dashboard</span>
+          </div>
+          <div class="route-settings-panel">
+            <div class="field-row">
+              <label for="discord-client-id">Client ID</label>
+              <input id="discord-client-id" type="text" placeholder="Discord application client ID" />
+            </div>
+            <div class="field-row">
+              <label for="discord-client-secret">Client secret</label>
+              <input id="discord-client-secret" type="password" placeholder="Optional for code flow" />
+            </div>
+            <div class="field-row">
+              <label for="discord-guild-id">Guild ID</label>
+              <input id="discord-guild-id" type="text" placeholder="Discord server ID" />
+            </div>
+            <div class="field-row">
+              <label for="discord-required-role-id">Required role ID</label>
+              <input id="discord-required-role-id" type="text" placeholder="Role required to use the app" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="login-discord-button" class="button button-secondary" type="button">Login with Discord</button>
+            <button id="open-discord-button" class="button button-secondary" type="button">Open Discord apps</button>
+          </div>
+          <div class="update-panel">
+            <div>
+              <div class="local-users-title"><i class="fa-solid fa-rotate"></i> App updates</div>
+              <div id="update-status" class="help-text">Ready to check for updates.</div>
+              <div id="update-version" class="update-version">Current version: -</div>
+            </div>
+            <div class="update-actions">
+              <button id="check-updates-button" class="button button-secondary" type="button">Check updates</button>
+              <button id="download-update-button" class="button button-secondary" type="button" disabled>Download</button>
+              <button id="install-update-button" class="button button-primary" type="button" disabled>Restart & install</button>
+            </div>
+          </div>
+          <div class="update-panel">
+            <div>
+              <div class="local-users-title"><i class="fa-brands fa-discord"></i> Rich Presence</div>
+              <div id="discord-presence-status" class="help-text">Checking Discord Rich Presence...</div>
+              <div id="discord-presence-client" class="update-version">Client ID: -</div>
+            </div>
+            <div class="update-actions">
+              <button id="test-rich-presence-button" class="button button-secondary" type="button">Test presence</button>
+              <button id="show-rich-presence-log-button" class="button button-secondary" type="button">Show log</button>
+            </div>
+          </div>
+          <pre id="discord-presence-log" class="presence-log" hidden></pre>
+          <div class="settings-section-title">
+            <h3><i class="fa-brands fa-steam"></i> Driver identity</h3>
+            <span>Used when completed jobs are sent to DriversHub</span>
+          </div>
+          <div class="route-settings-panel">
+            <div class="field-row">
+              <label for="driver-steam-id">Steam ID64</label>
+              <input id="driver-steam-id" type="text" inputmode="numeric" placeholder="7656119..." />
+            </div>
+          </div>
+          <div class="settings-section-title">
+            <h3><i class="fa-solid fa-window-maximize"></i> In-game overlay</h3>
+            <span>Saved locally for this Windows user</span>
+          </div>
+          <p class="help-text">Show a translucent stats bar over the game. Borderless/windowed game mode works best for overlays on Windows.</p>
+          <div class="overlay-settings-panel">
+            <label class="setting-toggle" for="overlay-enabled">
+              <input id="overlay-enabled" type="checkbox" />
+              <span>
+                <strong>Show overlay bar</strong>
+                <small>Turn the in-game stats overlay on or off.</small>
+              </span>
+            </label>
+            <label class="setting-toggle" for="overlay-require-game-focus">
+              <input id="overlay-require-game-focus" type="checkbox" />
+              <span>
+                <strong>Only show over ETS2/ATS</strong>
+                <small>Use this if you do not want the overlay visible while tabbed out.</small>
+              </span>
+            </label>
+            <div class="field-row">
+              <label for="overlay-position">Overlay position</label>
+              <select id="overlay-position">
+                <option value="top">Top</option>
+                <option value="bottom">Bottom</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label for="overlay-opacity">Overlay opacity</label>
+              <input id="overlay-opacity" type="range" min="0.28" max="1" step="0.04" />
+            </div>
+          </div>
+          <div class="overlay-field-header">
+            <div>
+              <h4>Overlay content</h4>
+              <p class="help-text">Choose the stats that should appear in your overlay.</p>
+            </div>
+            <button id="overlay-reset-fields" class="button button-secondary" type="button">Reset fields</button>
+          </div>
+          <div id="overlay-field-grid" class="overlay-field-grid"></div>
+          <div class="settings-section-title">
+            <h3><i class="fa-solid fa-route"></i> Route recommendations</h3>
+            <span>Used by the dashboard route picker</span>
+          </div>
+          <p class="help-text">Choose the game content you own so recommended routes only use matching cities and towns.</p>
+          <div class="route-settings-panel">
+            <div class="field-row">
+              <label for="route-default-game">Default route game</label>
+              <select id="route-default-game">
+                <option value="eut2">Euro Truck Simulator 2</option>
+                <option value="ats">American Truck Simulator</option>
+              </select>
+            </div>
+            <div id="route-dlc-grid" class="route-dlc-grid"></div>
+          </div>
+          <div class="form-actions">
+            <button id="save-config-button" class="button button-primary">Save settings</button>
+          </div>
+        </article>
+      </section>
+
+      <div data-partial="footer"></div>
+    </main>
+  </div>
+
+  <div id="steam-id-prompt" class="steam-id-prompt" hidden>
+    <div class="steam-id-dialog" role="dialog" aria-modal="true" aria-labelledby="steam-id-title">
+      <div class="settings-section-title steam-id-dialog-title">
+        <h3 id="steam-id-title"><i class="fa-brands fa-steam"></i> Steam ID64 required</h3>
+        <span>Saved locally</span>
+      </div>
+      <p class="help-text">Enter your Steam ID64 so completed jobs can be linked to your driver profile.</p>
+      <div class="field-row">
+        <label for="steam-id-prompt-input">Steam ID64</label>
+        <input id="steam-id-prompt-input" type="text" inputmode="numeric" placeholder="7656119..." />
+      </div>
+      <p id="steam-id-prompt-error" class="help-text steam-id-error"></p>
+      <div class="form-actions steam-id-actions">
+        <button id="steam-id-prompt-later" class="button button-secondary" type="button">Later</button>
+        <button id="steam-id-prompt-save" class="button button-primary" type="button">Save Steam ID</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="partials/layout.js"></script>
+  <script>
+    (() => {
+      const ADMIN_IDS = new Set([
+        "1496983353037951167",
+        "1496920531721650428",
+        "1496983823953428520"
+      ]);
+
+      function getRequestedPanel() {
+        const requested = window.location.hash.replace(/^#/, "") || "dashboard";
+        return document.getElementById(`${requested}-tab`) ? requested : "dashboard";
+      }
+
+      function isAdminUser(user) {
+        const roles = Array.isArray(user?.roles) ? user.roles : String(user?.roles || "").split(",");
+        const ids = [user?.id, user?.discordId, user?.discord_id, ...roles].map(String).filter(Boolean);
+        return ids.some((id) => ADMIN_IDS.has(id));
+      }
+
+      function activatePanel(tabName, user) {
+        const targetTab = tabName === "admin" && !isAdminUser(user) ? "dashboard" : tabName;
+        document.querySelectorAll(".panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === `${targetTab}-tab`);
+        });
+        document.querySelectorAll(".nav-item[data-tab]").forEach((item) => {
+          item.disabled = false;
+          item.classList.remove("disabled");
+          item.classList.toggle("active", item.dataset.tab === targetTab);
+          if (item.dataset.tab === "admin") {
+            item.hidden = !isAdminUser(user);
+          }
+        });
+        const subtitle = document.getElementById("page-subtitle");
+        const name = user?.displayName || user?.username || user?.id;
+        if (subtitle && name) {
+          subtitle.textContent = `Welcome back, ${name}!`;
+        }
+      }
+
+      async function getSavedUser() {
+        const response = await window.jastuk.loadUsers();
+        const users = Array.isArray(response.users) ? response.users : [];
+        return users.find((user) => user.enabled !== false) || null;
+      }
+
+      async function directDiscordLogin(button) {
+        const status = document.getElementById("login-status-message");
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Signing in...";
+        if (status) {
+          status.textContent = "Opening Discord login...";
+        }
+
+        try {
+          if (button.id === "login-discord-button") {
+            await window.jastuk.saveConfig({
+              DISCORD_CLIENT_ID: document.getElementById("discord-client-id")?.value.trim() || "",
+              DISCORD_CLIENT_SECRET: document.getElementById("discord-client-secret")?.value.trim() || "",
+              DISCORD_GUILD_ID: document.getElementById("discord-guild-id")?.value.trim() || "",
+              DISCORD_REQUIRED_ROLE_ID: document.getElementById("discord-required-role-id")?.value.trim() || "",
+              DRIVER_STEAM_ID: document.getElementById("driver-steam-id")?.value.trim() || ""
+            });
+          }
+
+          const response = await window.jastuk.discordLogin();
+          if (!response.success) {
+            if (status) {
+              status.textContent = `Login failed: ${response.error}`;
+            }
+            return;
+          }
+
+          if (status) {
+            status.textContent = "Login complete. Opening dashboard...";
+          }
+          window.location.hash = "dashboard";
+          activatePanel("dashboard", response.user);
+        } catch (error) {
+          if (status) {
+            status.textContent = `Login failed: ${error.message}`;
+          }
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("#login-page-button, #login-discord-button").forEach((button) => {
+          button.onclick = (event) => {
+            event.preventDefault();
+            directDiscordLogin(button);
+          };
+        });
+
+        getSavedUser()
+          .then((user) => {
+            if (user) {
+              activatePanel(getRequestedPanel(), user);
+            }
+          })
+          .catch(() => {});
+      });
+
+      window.addEventListener("hashchange", () => {
+        getSavedUser()
+          .then((user) => {
+            if (user) {
+              activatePanel(getRequestedPanel(), user);
+            }
+          })
+          .catch(() => {});
+      });
+    })();
+  </script>
+  <script src="renderer.js"></script>
+</body>
+</html>

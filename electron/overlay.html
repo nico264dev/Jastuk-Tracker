@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jastuk Tracker Overlay</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="overlay.css" />
+</head>
+<body>
+  <div id="overlay-bar" class="overlay-bar">
+    <img class="overlay-logo-center" data-overlay-field="logo" src="../public/img/logo.png" alt="" />
+    <div class="overlay-brand" data-overlay-field="driver">
+      <div>
+        <strong id="overlay-driver">Jastuk Tracker</strong>
+        <span id="overlay-status">Waiting for telemetry...</span>
+      </div>
+    </div>
+    <div class="overlay-stat" data-overlay-field="speed">
+      <span><i class="fa-solid fa-gauge-high"></i> Speed</span>
+      <strong id="overlay-speed">-</strong>
+    </div>
+    <div class="overlay-stat" data-overlay-field="rpm">
+      <span><i class="fa-solid fa-rotate-right"></i> RPM</span>
+      <strong id="overlay-rpm">-</strong>
+    </div>
+    <div class="overlay-stat overlay-small" data-overlay-field="gear">
+      <span><i class="fa-solid fa-gears"></i> Gear</span>
+      <strong id="overlay-gear">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="truck">
+      <span><i class="fa-solid fa-truck"></i> Truck</span>
+      <strong id="overlay-truck">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="route">
+      <span><i class="fa-solid fa-route"></i> Route</span>
+      <strong id="overlay-route">-</strong>
+    </div>
+    <div class="overlay-stat" data-overlay-field="fuel">
+      <span><i class="fa-solid fa-gas-pump"></i> Fuel</span>
+      <strong id="overlay-fuel">-</strong>
+    </div>
+    <div class="overlay-stat" data-overlay-field="damage">
+      <span><i class="fa-solid fa-screwdriver-wrench"></i> Damage</span>
+      <strong id="overlay-damage">-</strong>
+    </div>
+    <div class="overlay-stat overlay-small" data-overlay-field="odometer">
+      <span><i class="fa-solid fa-road"></i> Odo</span>
+      <strong id="overlay-odometer">-</strong>
+    </div>
+    <div class="overlay-stat overlay-small" data-overlay-field="speedLimit">
+      <span><i class="fa-solid fa-signs-post"></i> Limit</span>
+      <strong id="overlay-speed-limit">-</strong>
+    </div>
+    <div class="overlay-stat overlay-small" data-overlay-field="cruise">
+      <span><i class="fa-solid fa-gauge"></i> Cruise</span>
+      <strong id="overlay-cruise">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="systems">
+      <span><i class="fa-solid fa-power-off"></i> Systems</span>
+      <strong id="overlay-systems">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="lights">
+      <span><i class="fa-solid fa-lightbulb"></i> Lights</span>
+      <strong id="overlay-lights">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="warnings">
+      <span><i class="fa-solid fa-triangle-exclamation"></i> Warnings</span>
+      <strong id="overlay-warnings">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="temps">
+      <span><i class="fa-solid fa-temperature-half"></i> Temps</span>
+      <strong id="overlay-temps">-</strong>
+    </div>
+    <div class="overlay-stat overlay-wide" data-overlay-field="pressure">
+      <span><i class="fa-solid fa-car-battery"></i> Pressure</span>
+      <strong id="overlay-pressure">-</strong>
+    </div>
+  </div>
+  <script src="overlay-renderer.js"></script>
+</body>
+</html>

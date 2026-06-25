@@ -1,0 +1,73 @@
+{
+  "name": "jastuk-tracker",
+  "productName": "Jastuk Tracker",
+  "version": "1.0.7",
+  "description": "Electron dashboard for Jastuk Tracker local telemetry API",
+  "main": "electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nico264dev/Jastuk-Tracker.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "electron",
+    "ets2",
+    "ats",
+    "telemetry",
+    "tracker"
+  ],
+  "author": "Jastuk Tracker",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "electron-updater": "^6.8.9"
+  },
+  "devDependencies": {
+    "electron": "^26.2.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.jastuk.tracker",
+    "icon": "public/img/logo.png",
+    "files": [
+      "electron/**/*",
+      "!electron/users.json",
+      "!electron/jobs.json",
+      "!electron/job-deliveries.json",
+      "!electron/.env",
+      "public/**/*",
+      "package.json",
+      ".env.example"
+    ],
+    "directories": {
+      "buildResources": "electron/build"
+    },
+    "nsis": {
+      "artifactName": "Jastuk-Tracker-${version}-Setup.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "include": "electron/build/installer.nsh"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "publisherName": "Jastuk Tracker"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "nico264dev",
+        "repo": "Jastuk-Tracker"
+      }
+    ]
+  }
+}

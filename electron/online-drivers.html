@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Drivers - Jastuk Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="online-drivers">
+  <div class="app-shell">
+    <div data-partial="sidebar"></div>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <div class="page-title">Online Drivers</div>
+        </div>
+      </header>
+
+      <section class="panel active">
+        <div class="online-status-row">
+          <article class="card online-status-card">
+            <div class="online-status-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+            <div>
+              <div class="online-status-label">Live tracker</div>
+              <div id="live-status" class="online-status-value">Connecting...</div>
+            </div>
+          </article>
+          <article class="card online-status-card">
+            <div class="online-status-icon"><i class="fa-solid fa-clock"></i></div>
+            <div>
+              <div class="online-status-label">Last update</div>
+              <div id="live-updated" class="online-status-value">-</div>
+            </div>
+          </article>
+          <article class="card online-status-card">
+            <div class="online-status-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <div class="online-status-label">Drivers online</div>
+              <div id="live-driver-count" class="online-status-value">0</div>
+            </div>
+          </article>
+        </div>
+
+        <div id="online-driver-grid" class="online-driver-grid">
+          <article class="card online-driver-card">
+            <div class="help-text">Loading live driver telemetry...</div>
+          </article>
+        </div>
+      </section>
+
+      <div data-partial="footer"></div>
+    </main>
+  </div>
+
+  <script src="partials/layout.js"></script>
+  <script src="online-drivers-renderer.js"></script>
+</body>
+</html>
