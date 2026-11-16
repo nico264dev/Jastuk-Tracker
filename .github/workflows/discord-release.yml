@@ -1,0 +1,58 @@
+
+name: Discord Release Notification
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send release notes to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RELEASE_EVENT: ${{ toJSON(github.event.release) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          release = json.loads(os.environ["RELEASE_EVENT"])
+          version = release.get("tag_name", "New release")
+          notes = release.get("body") or "No release notes provided."
+          url = release["html_url"]
+
+          # Discord embed description limit
+          if len(notes) > 3900:
+              notes = notes[:3900] + "\n\n...(truncated)"
+
+          payload = {
+              "username": "Jastuk Tracker Updates",
+              "embeds": [{
+                  "title": f"🚀 Jastuk Tracker {version}",
+                  "url": url,
+                  "description": notes,
+                  "color": 5793266,
+                  "footer": {
+                      "text": "Jastuk Tracker • GitHub Release"
+                  }
+              }],
+              "allowed_mentions": {"parse": []}
+          }
+
+          request = urllib.request.Request(
+              os.environ["DISCORD_WEBHOOK_URL"],
+              data=json.dumps(payload).encode("utf-8"),
+              headers={
+                  "Content-Type": "application/json",
+                  "User-Agent": "Jastuk-Tracker-Release"
+              },
+              method="POST"
+          )
+
+          with urllib.request.urlopen(request) as response:
+              print(f"Discord notification sent: {response.status}")
+          PY
