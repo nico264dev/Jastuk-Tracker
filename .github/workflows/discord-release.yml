@@ -20,6 +20,7 @@ jobs:
           import json
           import os
           import urllib.request
+          import urllib.parse
 
           release = json.loads(os.environ["RELEASE_EVENT"])
 
@@ -28,10 +29,10 @@ jobs:
           url = release["html_url"]
           repo = os.environ["REPOSITORY"]
 
-          # Replace with a public, direct image URL
+          # Public logo from GitHub
           LOGO_URL = (
               f"https://raw.githubusercontent.com/"
-              f"{repo}/main/assets/logo.png"
+              f"{repo}/main/public/img/logo.png"
           )
 
           # Discord embed description limit: 4096
@@ -66,7 +67,7 @@ jobs:
                   "text": "Jastuk Tracker • GitHub Releases",
                   "icon_url": LOGO_URL
               },
-              "timestamp": release["published_at"]
+              "timestamp": release.get("published_at")
           }
 
           payload = {
@@ -86,8 +87,13 @@ jobs:
               "allowed_mentions": {"parse": []}
           }
 
+          # Enable Discord webhook buttons
+          webhook_url = os.environ["DISCORD_WEBHOOK_URL"]
+          separator = "&" if "?" in webhook_url else "?"
+          webhook_url += f"{separator}with_components=true"
+
           request = urllib.request.Request(
-              os.environ["DISCORD_WEBHOOK_URL"],
+              webhook_url,
               data=json.dumps(payload).encode("utf-8"),
               headers={
                   "Content-Type": "application/json",
