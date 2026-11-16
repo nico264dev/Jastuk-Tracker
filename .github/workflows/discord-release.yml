@@ -14,6 +14,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           RELEASE_EVENT: ${{ toJSON(github.event.release) }}
+          REPOSITORY: ${{ github.repository }}
         run: |
           python3 - <<'PY'
           import json
@@ -21,24 +22,66 @@ jobs:
           import urllib.request
 
           release = json.loads(os.environ["RELEASE_EVENT"])
-          version = release.get("tag_name", "New release")
+
+          version = release.get("tag_name") or "New Release"
           notes = release.get("body") or "No release notes provided."
           url = release["html_url"]
+          repo = os.environ["REPOSITORY"]
 
-          # Discord embed description limit
-          if len(notes) > 3900:
-              notes = notes[:3900] + "\n\n...(truncated)"
+          # Replace with a public, direct image URL
+          LOGO_URL = (
+              f"https://raw.githubusercontent.com/"
+              f"{repo}/main/assets/logo.png"
+          )
+
+          # Discord embed description limit: 4096
+          max_notes = 3800
+          if len(notes) > max_notes:
+              notes = notes[:max_notes].rstrip() + "\n\n*...truncated*"
+
+          # Brand color: #5e865b
+          brand_color = int("5e865b", 16)
+
+          prerelease = release.get("prerelease", False)
+          status = "🧪 Pre-release" if prerelease else "🚀 New Release"
+
+          embed = {
+              "author": {
+                  "name": "Jastuk Tracker • Release Updates",
+                  "url": f"https://github.com/{repo}",
+                  "icon_url": LOGO_URL
+              },
+              "title": f"{status}  •  {version}",
+              "url": url,
+              "description": (
+                  "A new version of **Jastuk Tracker** is available!\n\n"
+                  "### 📋 What's New\n"
+                  f"{notes}"
+              ),
+              "color": brand_color,
+              "thumbnail": {
+                  "url": LOGO_URL
+              },
+              "footer": {
+                  "text": "Jastuk Tracker • GitHub Releases",
+                  "icon_url": LOGO_URL
+              },
+              "timestamp": release["published_at"]
+          }
 
           payload = {
               "username": "Jastuk Tracker Updates",
-              "embeds": [{
-                  "title": f"🚀 Jastuk Tracker {version}",
-                  "url": url,
-                  "description": notes,
-                  "color": 5793266,
-                  "footer": {
-                      "text": "Jastuk Tracker • GitHub Release"
-                  }
+              "avatar_url": LOGO_URL,
+              "embeds": [embed],
+              "components": [{
+                  "type": 1,
+                  "components": [{
+                      "type": 2,
+                      "style": 5,
+                      "label": "View Release & Download",
+                      "emoji": {"name": "📦"},
+                      "url": url
+                  }]
               }],
               "allowed_mentions": {"parse": []}
           }
